@@ -2,14 +2,14 @@ class Alien
 
 
   attr_reader :name
-  attr_accessor :planet, :significant_other
+  attr_accessor :planet
 
   @@all = []
 
-  def initialize(name, planet = nil, significant_other = nil)
+  def initialize(name, planet)
     @name = name
     @planet = planet
-    @significant_other = significant_other
+
     @@all << self
   end
 
@@ -17,29 +17,40 @@ class Alien
     @@all
   end
 
-  def go_on_a_date(alien)
-    unless alien.significant_other && self.significant_other
-      alien.significant_other = self
-      self.significant_other = alien
+  def go_on_date(alien)
+    unless self.relationship || alien.relationship
+      Relationship.new(self, alien)
+    end
+  end
+
+  def relationship
+    Relationship.all.find do |relationship|
+      relationship.aliens.include?(self)
+    end
+  end
+
+  def significant_other
+    if relationship
+      relationship.aliens.find { |alien| alien != self }
     end
   end
 
   def breakup
-    self.significant_other.significant_other = nil
-    self.significant_other = nil
-  end
-
-  def ready_to_move
-    if self.planet != self.significant_other.planet 
-      self.planet = self.significant_other.planet 
+    if relationship
+      relationship.aliens = nil
     end
   end
 
+  def ready_to_move
+    @planet = significant_other.planet
+  end
+
   def self.singles
-    all.select {|a| a.significant_other == nil}
+    @@all.select { |alien| !alien.relationship }
   end
 
   def self.dating
-    all.select {|a| a.significant_other}
+    @@all.select { |alien| alien.relationship }
   end
+
 end

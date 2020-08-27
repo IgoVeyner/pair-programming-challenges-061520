@@ -1,0 +1,7 @@
+#!/usr/bin/ruby
+# You may have to edit the line above for your specific ruby run file (!#/usr/local/bin/run or something similar)
+
+# there was a minor error here where it was looking for the environment in lib instead of config, this is easy to change
+require_relative "../config/environment.rb"
+
+CLI.new.run

@@ -15,18 +15,16 @@ class Planet
   end
 
   def aliens
-    Alien.all.select {|a| a.planet == self}
+    Alien.all.select { |alien| alien.planet == self }
   end
 
   def local_singles
-    Alien.singles.select{|a| a.planet == self}
+    Alien.singles.select { |alien| alien.planet == self }
   end
 
-  def self.empty_planet
-    Planet.all.map do |p| 
-      if p.aliens == []
-        p
-      end
-    end
+  def self.empty_planets
+    @@all.select { |planet| planet.aliens.length < 0 }
   end
+
+
 end
