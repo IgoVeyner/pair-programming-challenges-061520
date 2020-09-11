@@ -1,0 +1,12 @@
+<h2>Search Users:</h2>
+
+  <form action="/search-users" method="post">
+    <input type="text" name="search" placeholder="Search">
+    <input type="submit" value="Search">
+  </form>
+
+<h2>All Users:</h2>
+
+<% @users.each do |u|%>
+  <h3><a href="/users/<%= u.id %>"><%= u.name %></a></h3>
+<% end %>
